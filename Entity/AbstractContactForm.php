@@ -9,6 +9,8 @@
  */
 namespace Neutron\Widget\ContactFormBundle\Entity;
 
+use Neutron\MvcBundle\Widget\WidgetInterface;
+
 use Neutron\Widget\ContactFormBundle\Model\ContactFormInterface;
 
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -167,5 +169,4 @@ class AbstractContactForm implements ContactFormInterface
     {
         $this->locale = $locale;
     }
-
 }

@@ -2,6 +2,8 @@
 
 namespace Neutron\Widget\ContactFormBundle\DependencyInjection;
 
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -19,10 +21,8 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('neutron_contact_form');
-
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
+        $this->addGeneralConfigurations($rootNode);
+        $this->addFormBackendConfigurations($rootNode);
 
         return $treeBuilder;
     }

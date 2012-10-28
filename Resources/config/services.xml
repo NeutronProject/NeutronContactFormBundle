@@ -11,18 +11,17 @@
   	    <parameter key="neutron_contact_form.controller.backend.contact_form.default.class">Neutron\Widget\ContactFormBundle\Controller\Backend\ContactFormController</parameter>
         <parameter key="neutron_contact_form.controller.frontend.contact_form.default.class">Neutron\Widget\ContactFormBundle\Controller\Frontend\ContactFormController</parameter>
         <parameter key="neutron_contact_form.form.backend.type.contact_form.class">Neutron\Widget\ContactFormBundle\Form\Backend\Type\ContactFormType</parameter>     
-    	<parameter key="neutron_contact_form.form.backend.type.contact_form.general.class">Neutron\Widget\ContactBundle\Form\Backend\Type\ContactForm\GeneralType</parameter>
+    	<parameter key="neutron_contact_form.form.backend.type.contact_form.general.class">Neutron\Widget\ContactFormBundle\Form\Backend\Type\ContactForm\GeneralType</parameter>
         <parameter key="neutron_contact_form.form.backend.handler.contact_form.default.class">Neutron\Widget\ContactFormBundle\Form\Backend\Handler\ContactFormHandler</parameter>
         <parameter key="neutron_contact_form.datagrid.builder.contact_form_management.class">Neutron\Widget\ContactFormBundle\DataGrid\ContactFormManagementDataGrid</parameter>
     	<parameter key="neutron_contact_form.form.frontend.handler.contact_form.default.class">Neutron\Widget\ContactFormBundle\Form\Frontend\Handler\ContactFormHandler</parameter>
         <parameter key="neutron_contact_form.mailer.default.class">Neutron\Widget\ContactFormBundle\Mailer\ContactMailer</parameter>
-        <parameter key="neutron_contact_form.doctrine.event_subscriber.widget_contact_form.class">Neutron\Widget\ContactFormBundle\Doctrine\EventSubscriber\WidgetContactFormEventSubscriber</parameter>
-    
+ 
     </parameters>
 
     <services>
         <service id="neutron_contact_form.widget.builder" 
-        	class="%neutron_contact.widget.builder.class%"
+        	class="%neutron_contact_form.widget.builder.class%"
         >
             <argument type="service" id="event_dispatcher" />
             <argument type="service" id="neutron_mvc.widget.factory" />
@@ -152,15 +151,7 @@
             	<argument>%neutron_contact_form.translation_domain%</argument>
         	</call>
         </service>
-        
-        <service id="neutron_contact_form.doctrine.event_subscriber.widget_contact_form"
-        	class="%neutron_contact_form.doctrine.event_subscriber.widget_contact_form.class%"
-        >
-        	<argument type="service" id="neutron_contact_form.widget" />
-        	
-        	<tag name="doctrine.event_subscriber" connection="default" />
-        </service>
-        
+ 
     </services>
     
 </container>

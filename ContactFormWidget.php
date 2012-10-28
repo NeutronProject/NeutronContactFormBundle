@@ -11,7 +11,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Neutron\MvcBundle\Widget\WidgetFactoryInterface;
 
-class ContactBlockWidget
+class ContactFormWidget
 {
     const IDENTIFIER = 'neutron.widget.contact_form';
     
@@ -45,7 +45,7 @@ class ContactBlockWidget
                 'route'     => 'neutron_contact_form.backend.contact_form',
                 'displayed' => true
            ))
-             ->setExtra(array(
+             ->setExtraData(array(
                  'contact_form_handler_route' => 'neutron_contact_form.frontend.contact_form.handle'
              ))
            
