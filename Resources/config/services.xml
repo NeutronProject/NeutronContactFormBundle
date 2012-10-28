@@ -4,17 +4,163 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <!--
+    
     <parameters>
-        <parameter key="neutron_contact_form.example.class">Neutron\Widget\ContactFormBundle\Example</parameter>
+        <parameter key="neutron_contact_form.widget.builder.class">Neutron\Widget\ContactFormBundle\ContactFormWidget</parameter>
+        <parameter key="neutron_contact_form.doctrine.contact_form_manager.default.class">Neutron\Widget\ContactFormBundle\Doctrine\ContactFormManager</parameter>
+  	    <parameter key="neutron_contact_form.controller.backend.contact_form.default.class">Neutron\Widget\ContactFormBundle\Controller\Backend\ContactFormController</parameter>
+        <parameter key="neutron_contact_form.controller.frontend.contact_form.default.class">Neutron\Widget\ContactFormBundle\Controller\Frontend\ContactFormController</parameter>
+        <parameter key="neutron_contact_form.form.backend.type.contact_form.class">Neutron\Widget\ContactFormBundle\Form\Backend\Type\ContactFormType</parameter>     
+    	<parameter key="neutron_contact_form.form.backend.type.contact_form.general.class">Neutron\Widget\ContactBundle\Form\Backend\Type\ContactForm\GeneralType</parameter>
+        <parameter key="neutron_contact_form.form.backend.handler.contact_form.default.class">Neutron\Widget\ContactFormBundle\Form\Backend\Handler\ContactFormHandler</parameter>
+        <parameter key="neutron_contact_form.datagrid.builder.contact_form_management.class">Neutron\Widget\ContactFormBundle\DataGrid\ContactFormManagementDataGrid</parameter>
+    	<parameter key="neutron_contact_form.form.frontend.handler.contact_form.default.class">Neutron\Widget\ContactFormBundle\Form\Frontend\Handler\ContactFormHandler</parameter>
+        <parameter key="neutron_contact_form.mailer.default.class">Neutron\Widget\ContactFormBundle\Mailer\ContactMailer</parameter>
+        <parameter key="neutron_contact_form.doctrine.event_subscriber.widget_contact_form.class">Neutron\Widget\ContactFormBundle\Doctrine\EventSubscriber\WidgetContactFormEventSubscriber</parameter>
+    
     </parameters>
 
     <services>
-        <service id="neutron_contact_form.example" class="%neutron_contact_form.example.class%">
-            <argument type="service" id="service_id" />
-            <argument>plain_value</argument>
-            <argument>%parameter_name%</argument>
+        <service id="neutron_contact_form.widget.builder" 
+        	class="%neutron_contact.widget.builder.class%"
+        >
+            <argument type="service" id="event_dispatcher" />
+            <argument type="service" id="neutron_mvc.widget.factory" />
+            <argument type="service" id="translator" />
+            <argument>%neutron_contact_form.translation_domain%</argument>
         </service>
+                
+        <service id="neutron_contact_form.widget" 
+        	class="Neutron\MvcBundle\Widget\WidgetFactory"
+        	factory-service="neutron_contact_form.widget.builder"
+        	factory-method="build"
+        >
+        	<tag name="neutron.widget" alias="neutron.widget.contact_form" />
+        </service>
+        
+        <service id="neutron_contact_form.doctrine.contact_form_manager.default" 
+        	class="%neutron_contact_form.doctrine.contact_form_manager.default.class%">
+            <call method="setClassName">
+            	<argument>%neutron_contact_form.contact_form_class%</argument>
+            </call>
+            <call method="setObjectManager">
+            	<argument type="service" id="object_manager" />
+            </call>
+        </service>
+        
+        <service id="neutron_contact_form.controller.backend.contact_form.default" 
+      		class="%neutron_contact_form.controller.backend.contact_form.default.class%"
+        >	
+ 			<call method="setContainer">
+            	<argument type="service" id="service_container" />
+            </call>    
+        </service>
+        
+        <service id="neutron_contact_form.controller.frontend.contact_form.default" 
+      		class="%neutron_contact_form.controller.frontend.contact_form.default.class%"
+        >	
+ 			<call method="setContainer">
+            	<argument type="service" id="service_container" />
+            </call>    
+        </service>
+        
+        <service id="neutron_contact_form.form.backend.contact_form" factory-method="createNamed" factory-service="form.factory" class="Symfony\Component\Form\Form">
+            <argument>%neutron_contact_form.form.backend.name.contact_form%</argument>
+            <argument>%neutron_contact_form.form.backend.type.contact_form%</argument>
+        </service>
+        
+        <service id="neutron_contact_form.form.backend.type.contact_form"
+        	class="%neutron_contact_form.form.backend.type.contact_form.class%"
+        >                  
+            <tag name="form.type" alias="neutron_backend_contact_form" />
+        </service>
+        
+        <service id="neutron_contact_form.form.backend.type.contact_form.general" 
+			class="%neutron_contact_form.form.backend.type.contact_form.general.class%"
+		>
+            <call method="setContactFormClass">
+            	<argument>%neutron_contact_form.contact_form_class%</argument>
+            </call>
+            <call method="setMailTemplates">
+            	<argument>%neutron_contact_form.mail_templates%</argument>
+            </call>
+            <call method="setRecipients">
+            	<argument>%neutron_contact_form.mail_recipients%</argument>
+            </call>
+            <call method="setFormTypes">
+            	<argument>%neutron_contact_form.form_types%</argument>
+            </call>
+            <call method="setTemplates">
+            	<argument>%neutron_contact_form.templates%</argument>
+            </call>
+            <call method="setTranslationDomain">
+            	<argument>%neutron_contact_form.translation_domain%</argument>
+            </call>
+            
+            <tag name="form.type" alias="neutron_backend_contact_form_general" />
+		</service>
+		
+		<service id="neutron_contact_form.form.backend.handler.contact_form.default" 
+        	class="%neutron_contact_form.form.backend.handler.contact_form.default.class%"
+        >
+        	<call method="setContainer">
+        		<argument type="service" id="service_container" />
+        	</call>
+        	<call method="setForm">
+        		<argument type="service" id="neutron_contact_form.form.backend.contact_form" />
+        	</call>
+        	<call method="setTranslationDomain">
+        		<argument>%neutron_contact_form.translation_domain%</argument>
+        	</call>
+        </service>
+        
+        <service id="neutron_contact_form.datagrid.builder.contact_form_management" 
+        	class="%neutron_contact_form.datagrid.builder.contact_form_management.class%"
+        	scope="request"
+       	>
+        	<argument type="service" id="neutron_data_grid.factory" />
+        	<argument type="service" id="translator" />
+        	<argument type="service" id="router" />
+        	<argument type="service" id="neutron_contact_form.contact_form_manager" />
+        	<argument>%neutron_contact_form.translation_domain%</argument>
+        </service>
+        
+        <service id="neutron_contact_form.datagrid.contact_form_management" 
+        	class="Neutron\Bundle\DataGridBundle\DataGrid\DataGrid"
+        	factory-service="neutron_contact_form.datagrid.builder.contact_form_management"
+        	factory-method="build"
+        >
+        	<tag name="neutron_data_grid.datagrid" alias="neutron_contact_form_management" />
+        </service>
+        
+        <service id="neutron_contact_form.mailer.default" 
+        	class="%neutron_contact_form.mailer.default.class%"
+        >
+        	<call method="setContainer">
+        		<argument type="service" id="service_container" />
+        	</call>
+        </service>
+        
+        <service id="neutron_contact_form.form.frontend.handler.contact_form.default" 
+        	class="%neutron_contact_form.form.frontend.handler.contact_form.default.class%"
+        >
+        	<call method="setContainer">
+            	<argument type="service" id="service_container" />
+        	</call>
+
+        	<call method="setTranslationDomain">
+            	<argument>%neutron_contact_form.translation_domain%</argument>
+        	</call>
+        </service>
+        
+        <service id="neutron_contact_form.doctrine.event_subscriber.widget_contact_form"
+        	class="%neutron_contact_form.doctrine.event_subscriber.widget_contact_form.class%"
+        >
+        	<argument type="service" id="neutron_contact_form.widget" />
+        	
+        	<tag name="doctrine.event_subscriber" connection="default" />
+        </service>
+        
     </services>
-    -->
+    
 </container>

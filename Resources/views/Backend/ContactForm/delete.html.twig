@@ -1,0 +1,43 @@
+{% extends "NeutronAdminBundle::layout.html.twig" %}
+
+{% block headDesc %}
+    <h1 class="icon messages">
+        {% trans from translationDomain %}header{% endtrans %} <small>some description</small>
+    </h1>
+{% endblock %}
+
+{% block body %}
+<div class="row">
+	<div class="grid12">
+		<article class="panel">
+		 	<header><h2>Are you sure you want to delete this record?</h2></header>
+		 	
+            <table class="table">
+                <tbody>
+                	<tr>
+                		<td><strong>{{ 'form.name'|trans({}, translationDomain) }}</strong></td>
+                		<td class="actions">{{ entity.name }}</td>
+                	</tr>
+
+                	<tr>
+                		<td><strong>{{ 'form.enabled'|trans({}, translationDomain) }}</strong></td>
+                		<td class="actions">{{ entity.enabled|yes_no }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div style="clear:both"></div>
+            
+            <div class="actions">
+                <div class="controls">
+                    <form action="{{ app.request.requestUri }}" method="POST">
+                        <button type="submit"  style="float:right; margin:5px;" type="submit" class="btn" name="operation" value="delete">{{ 'delete'|trans({}, translationDomain) }}</button>
+                        <a href="{{ path('neutron_contact_form.backend.contact_form') }}" style="float:right; margin:5px;" class="btn action" >{{ 'administration.back'|trans({}, translationDomain) }}</a>
+                    </form>   
+                </div>
+            </div> 	
+		</article>
+
+	</div>
+</div>
+{% endblock %}

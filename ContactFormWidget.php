@@ -38,13 +38,17 @@ class ContactBlockWidget
         $widget
             ->setLabel($this->translator->trans('widget.contact_form.label', array(), $this->translationDomain))
             ->setDescription($this->translator->trans('widget.contact_form.desc', array(), $this->translationDomain))
-            ->setForward('neutron_contact_block.controller.frontend.widget_contact_form:renderAction')
+            ->setForward('neutron_contact_form.controller.frontend.contact_form:renderAction')
             ->addBackendPage(array(
-                'name'      => 'widget.contact_block.management',
-                'label'     => 'widget.contact_block.management.label',
-                'route'     => 'neutron_contact_block.backend.widget_contact_block',
+                'name'      => 'widget.contact_form.management',
+                'label'     => 'widget.contact_form.management.label',
+                'route'     => 'neutron_contact_form.backend.contact_form',
                 'displayed' => true
-            ))
+           ))
+             ->setExtra(array(
+                 'contact_form_handler_route' => 'neutron_contact_form.frontend.contact_form.handle'
+             ))
+           
         ;
         
         $this->dispatcher->dispatch(

@@ -26,4 +26,73 @@ class Configuration implements ConfigurationInterface
 
         return $treeBuilder;
     }
+    
+    private function addGeneralConfigurations(ArrayNodeDefinition $node)
+    {
+        $node
+            ->addDefaultsIfNotSet()
+            ->children()
+                ->booleanNode('enable')->defaultFalse()->end()
+                ->scalarNode('class')->isRequired()->cannotBeEmpty()->end()
+                ->scalarNode('controller_backend')->defaultValue('neutron_contact_form.controller.backend.contact_form.default')->end()
+                ->scalarNode('controller_frontend')->defaultValue('neutron_contact_form.controller.frontend.contact_form.default')->end()
+                ->scalarNode('manager')->defaultValue('neutron_contact_form.doctrine.contact_form_manager.default')->end()
+                ->scalarNode('datagrid')->defaultValue('neutron_contact_form_management')->end()
+                ->arrayNode('form_types')
+                    ->useAttributeAsKey('name')
+                        ->prototype('scalar')
+                    ->end() 
+                    ->cannotBeOverwritten()
+                    ->isRequired()
+                    ->cannotBeEmpty()
+                ->end()
+                ->arrayNode('mail_recipients')
+                    ->useAttributeAsKey('name')
+                        ->prototype('scalar')
+                    ->end() 
+                    ->cannotBeOverwritten()
+                    ->isRequired()
+                    ->cannotBeEmpty()
+                ->end()
+                ->arrayNode('mail_templates')
+                    ->useAttributeAsKey('name')
+                        ->prototype('scalar')
+                    ->end() 
+                    ->cannotBeOverwritten()
+                    ->isRequired()
+                    ->cannotBeEmpty()
+                ->end()
+                ->arrayNode('templates')
+                    ->useAttributeAsKey('name')
+                        ->prototype('scalar')
+                    ->end() 
+                    ->cannotBeOverwritten()
+                    ->isRequired()
+                    ->cannotBeEmpty()
+                ->end()
+                ->scalarNode('mailer')->defaultValue('neutron_contact_form.mailer.default')->end()
+                ->scalarNode('mail_handler')->defaultValue('neutron_contact_form.form.frontend.handler.contact_form.default')->end()
+                ->scalarNode('translation_domain')->defaultValue('NeutronContactFormBundle')->end()
+            ->end()
+        ;
+    }
+    
+    private function addFormBackendConfigurations(ArrayNodeDefinition $node)
+    {
+        $node
+            ->children()
+                ->arrayNode('form_backend')
+                    ->addDefaultsIfNotSet()
+                        ->children()
+                            ->scalarNode('type')->defaultValue('neutron_backend_contact_form')->end()
+                            ->scalarNode('handler')->defaultValue('neutron_contact_form.form.backend.handler.contact_form.default')->end()
+                            ->scalarNode('name')->defaultValue('neutron_backend_contact_form')->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
+    }
+    
+
 }

@@ -1,0 +1,93 @@
+<?xml version="1.0" ?>
+<constraint-mapping xmlns="http://symfony.com/schema/dic/constraint-mapping"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/constraint-mapping
+        http://symfony.com/schema/dic/constraint-mapping/constraint-mapping-1.0.xsd">
+
+    <class name="Neutron\Widget\ContactFormBundle\Entity\AbstractContactForm">  
+   	    
+        <property name="name">
+        	<constraint name="NotBlank">
+                <option name="message">name.blank</option>
+                <option name="groups">
+                    <value>default</value>
+                </option>
+            </constraint>
+            <constraint name="MinLength">
+                <option name="limit">2</option>
+                <option name="message">name.short</option>
+                <option name="groups">
+                    <value>default</value>
+                </option>
+            </constraint>
+            <constraint name="MaxLength">
+                <option name="limit">255</option>
+                <option name="message">name.long</option>
+                <option name="groups">
+                    <value>default</value>
+                </option>
+            </constraint>
+        </property>
+        
+        <property name="mailSubject">
+        	<constraint name="NotBlank">
+                <option name="message">mailSubject.blank</option>
+                <option name="groups">
+                    <value>default</value>
+                </option>
+            </constraint>
+            <constraint name="MinLength">
+                <option name="limit">2</option>
+                <option name="message">mailSubject.short</option>
+                <option name="groups">
+                    <value>default</value>
+                </option>
+            </constraint>
+            <constraint name="MaxLength">
+                <option name="limit">255</option>
+                <option name="message">mailSubject.long</option>
+                <option name="groups">
+                    <value>default</value>
+                </option>
+            </constraint>
+        </property>
+        
+        <property name="mailTemplate">
+        	<constraint name="NotBlank">
+                <option name="message">mailTemplate.blank</option>
+                <option name="groups">
+                    <value>default</value>
+                </option>
+            </constraint>
+        </property>
+        
+        <property name="recipients">
+        	<constraint name="NotBlank">
+                <option name="message">recipients.blank</option>
+                <option name="groups">
+                    <value>default</value>
+                </option>
+            </constraint>
+        </property>
+        
+        <property name="form">
+        	<constraint name="NotBlank">
+                <option name="message">form.blank</option>
+                <option name="groups">
+                    <value>default</value>
+                </option>
+            </constraint>
+        </property>
+        
+        <property name="template">
+        	<constraint name="NotBlank">
+                <option name="message">template.blank</option>
+                <option name="groups">
+                    <value>default</value>
+                </option>
+            </constraint>
+        </property>
+        
+    </class>
+
+</constraint-mapping>
